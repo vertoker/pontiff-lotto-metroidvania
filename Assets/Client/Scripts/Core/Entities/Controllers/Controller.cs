@@ -1,9 +1,10 @@
+using Core.Entities.Interfaces;
 using Core.Input.Keys;
 using UnityEngine;
 
 namespace Core.Entities.Controllers
 {
-    public class Controller : MonoBehaviour
+    public class Controller : MonoBehaviour, IInput
     {
         [SerializeField] private InputBlock _movement;
         [SerializeField] private InputBlock _worldInteraction;

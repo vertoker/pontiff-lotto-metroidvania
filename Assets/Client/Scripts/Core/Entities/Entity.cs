@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Core.Entities
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
     public class Entity : MonoBehaviour
     {
         [SerializeField] private Stats _baseStats;

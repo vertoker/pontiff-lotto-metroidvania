@@ -1,9 +1,10 @@
+using Core.Entities.Interfaces;
 using Core.Input.Keys;
 using UnityEngine;
 
 namespace Core.Entities.Controllers
 {
-    public class InputBlock : MonoBehaviour
+    public class InputBlock : MonoBehaviour, IInput
     {
         public virtual void SetKeyDown(KeyMovement key)
         {
