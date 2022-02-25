@@ -13,7 +13,7 @@ public class CameraMover : MonoBehaviour
         _self = transform;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         _self.position = Vector3.Lerp(_self.position, _target.position, _t);
     }

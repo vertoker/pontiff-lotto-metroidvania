@@ -49,10 +49,10 @@ namespace Core.Entities.Movement
 
         private void Jump()
         {
-            if (_isDash)
+            if (_isJump)
                 return;
             _isJump = true;
-            _rb.AddForce(Vector2.up * _powerJump);
+            _rb.AddForce(Vector2.up * _powerJump, ForceMode2D.Impulse);
         }
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -86,6 +86,11 @@ namespace Core.Entities.Movement
                 _rb.velocity = new Vector2(Mathf.Floor(_horizontalDirection) * _powerDash, _rb.velocity.y);
             else
                 _rb.velocity = new Vector2(_horizontalDirection * _powerMove, _rb.velocity.y);
+        }
+
+        private void Update()//Создать систему обновлений
+        {
+            UpdateMovement();
         }
     }
 }
