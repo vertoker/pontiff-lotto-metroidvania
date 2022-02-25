@@ -9,38 +9,22 @@ namespace Core.Input
     {
         [SerializeField] private Controller _target;
 
-        public void SetKeyDown(KeyMovement key)
+        public void Move(Vector2 direction)
         {
-            _target.SetKeyDown(key);
+            _target.Move(direction);
         }
-        public void SetKeyDown(KeyWorldInteraction key)
+        public void Press(KeyWorldInteraction key)
         {
-            _target.SetKeyDown(key);
+            _target.Press(key);
         }
-        public void SetKeyDown(KeyFighting key)
+
+        public void Press(KeyFighting key)
         {
-            _target.SetKeyDown(key);
+            _target.Press(key);
         }
-        public void SetKeyDown(KeySwitchWeapon key)
+        public void Press(KeySwitchWeapon key)
         {
-            _target.SetKeyDown(key);
-        }
-        /// /// /// /// /// /// /// /// /// /// /// /// /// ///
-        public void SetKeyUp(KeyMovement key)
-        {
-            _target.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeyWorldInteraction key)
-        {
-            _target.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeyFighting key)
-        {
-            _target.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeySwitchWeapon key)
-        {
-            _target.SetKeyUp(key);
+            _target.Press(key);
         }
     }
 }

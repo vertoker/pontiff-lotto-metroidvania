@@ -15,12 +15,7 @@ namespace Core.Entities.Movement
         [SerializeField] private float _powerDash = 1f;
         [SerializeField] private float _timeDash = 0.3f;
 
-        [Header("Buttons statuses (debug vision)")]
-        [SerializeField] private bool _keyLeft = false;
-        [SerializeField] private bool _keyRight = false;
-        [SerializeField] private bool _keyJump = false;
-        [SerializeField] private bool _keyDash = false;
-
+        private float _horizontalDirection;
         private bool _isJump = false;
         private bool _isDash = false;
         private Coroutine _dashTimer;
@@ -32,89 +27,65 @@ namespace Core.Entities.Movement
             _rb = GetComponent<Rigidbody2D>();
         }
 
-        public override void SetKeyDown(KeyMovement key)
+        public override void Move(Vector2 direction)
         {
-            switch (key)
-            {
-                case KeyMovement.Left:
-                    _keyLeft = true;
-                    break;
-                case KeyMovement.Right:
-                    _keyRight = true;
-                    break;
-#if UNITY_EDITOR
-                case KeyMovement.Undefined:
-                    Debug.Log("Button is undefined");
-                    break;
-#endif
-            }
+            _horizontalDirection = direction.x;
             UpdateMovement();
         }
-        public override void SetKeyUp(KeyMovement key)
-        {
-            switch (key)
-            {
-                case KeyMovement.Left:
-                    _keyLeft = false;
-                    break;
-                case KeyMovement.Right:
-                    _keyRight = false;
-                    break;
-#if UNITY_EDITOR
-                case KeyMovement.Undefined:
-                    Debug.Log("Button is undefined");
-                    break;
-#endif
-            }
-            UpdateMovement();
-        }
-
-        public override void SetKeyDown(KeyWorldInteraction key)
+        public override void Press(KeyWorldInteraction key)
         {
             switch (key)
             {
                 case KeyWorldInteraction.Jump:
-                    _keyJump = true;
+                    Jump();
                     break;
                 case KeyWorldInteraction.Dash:
-                    _keyDash = true;
+                    Dash();
                     break;
-#if UNITY_EDITOR
                 case KeyWorldInteraction.Undefined:
-                    Debug.Log("Button is undefined");
                     break;
-#endif
             }
-            UpdateMovement();
-        }
-        public override void SetKeyUp(KeyWorldInteraction key)
-        {
-            switch (key)
-            {
-                case KeyWorldInteraction.Jump:
-                    _keyJump = false;
-                    break;
-                case KeyWorldInteraction.Dash:
-                    _keyDash = false;
-                    break;
-#if UNITY_EDITOR
-                case KeyWorldInteraction.Undefined:
-                    Debug.Log("Button is undefined");
-                    break;
-#endif
-            }
-            UpdateMovement();
         }
 
-        public void UpdateMovement()
+        private void Jump()
         {
-            float horizontalDirection = _keyLeft != _keyRight ? (_keyRight ? _powerMove : -_powerMove) : 0;
-            _rb.velocity = new Vector2(horizontalDirection, 0);
+            if (_isDash)
+                return;
+            _isJump = true;
+            _rb.AddForce(Vector2.up * _powerJump);
         }
-        public IEnumerator DashTimer()
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (_isJump)
+            {
+                _isJump = false;
+            }
+        }
+
+        private void Dash()
+        {
+            if (_isDash)
+                return;
+            _isDash = true;
+            UpdateMovement();
+
+            if (_dashTimer != null)
+                StopCoroutine(_dashTimer);
+            _dashTimer = StartCoroutine(DashTimer());
+        }
+        private IEnumerator DashTimer()
         {
             yield return new WaitForSeconds(_timeDash);
+            _isDash = false;
             UpdateMovement();
+        }
+
+        private void UpdateMovement()
+        {
+            if (_isDash)
+                _rb.velocity = new Vector2(Mathf.Floor(_horizontalDirection) * _powerDash, _rb.velocity.y);
+            else
+                _rb.velocity = new Vector2(_horizontalDirection * _powerMove, _rb.velocity.y);
         }
     }
 }

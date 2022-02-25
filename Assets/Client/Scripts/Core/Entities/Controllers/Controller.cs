@@ -6,43 +6,47 @@ namespace Core.Entities.Controllers
 {
     public class Controller : MonoBehaviour, IInput
     {
-        [SerializeField] private InputBlock _movement;
-        [SerializeField] private InputBlock _worldInteraction;
-        [SerializeField] private InputBlock _fighting;
-        [SerializeField] private InputBlock _switchWeapon;
+        [System.Serializable]
+        class ControllerBlock
+        {
+            [SerializeField] private InputBlock _block;
+            [SerializeField] private bool movement = false;
+            [SerializeField] private bool worldInteraction = false;
+            [SerializeField] private bool fighting = false;
+            [SerializeField] private bool switchWeapon = false;
 
-        public void SetKeyDown(KeyMovement key)
-        {
-            _movement.SetKeyDown(key);
+            public InputBlock Block => _block;
+            public bool Movement => movement;
+            public bool WorldInteraction => worldInteraction;
+            public bool Fighting => fighting;
+            public bool SwitchWeapon => switchWeapon;
         }
-        public void SetKeyDown(KeyWorldInteraction key)
+
+        [SerializeField] private ControllerBlock[] _blocks;
+
+        public void Move(Vector2 direction)
         {
-            _worldInteraction.SetKeyDown(key);
+            foreach (var block in _blocks)
+                if (block.Movement)
+                    block.Block.Move(direction);
         }
-        public void SetKeyDown(KeyFighting key)
+        public void Press(KeyWorldInteraction key)
         {
-            _fighting.SetKeyDown(key);
+            foreach (var block in _blocks)
+                if (block.WorldInteraction)
+                    block.Block.Press(key);
         }
-        public void SetKeyDown(KeySwitchWeapon key)
+        public void Press(KeyFighting key)
         {
-            _switchWeapon.SetKeyDown(key);
+            foreach (var block in _blocks)
+                if (block.Fighting)
+                    block.Block.Press(key);
         }
-        /// /// /// /// /// /// /// /// /// /// /// /// /// ///
-        public void SetKeyUp(KeyMovement key)
+        public void Press(KeySwitchWeapon key)
         {
-            _movement.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeyWorldInteraction key)
-        {
-            _worldInteraction.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeyFighting key)
-        {
-            _fighting.SetKeyUp(key);
-        }
-        public void SetKeyUp(KeySwitchWeapon key)
-        {
-            _switchWeapon.SetKeyUp(key);
+            foreach (var block in _blocks)
+                if (block.SwitchWeapon)
+                    block.Block.Press(key);
         }
     }
 }

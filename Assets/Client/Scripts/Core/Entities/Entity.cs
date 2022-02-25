@@ -11,13 +11,12 @@ namespace Core.Entities
     {
         [SerializeField] private Stats _baseStats;
         [SerializeField] private ArmorSetData _armorSlot;
-        [SerializeField] private List<IItem> _items;
+        [SerializeField] private List<IItem> _items = new List<IItem>();
 
         [SerializeField] private List<PassiveEffect> _effects;
         [SerializeField] private Stats _passiveStats = new Stats();
 
         [SerializeField] private List<IActiveSkill> _skills;
-
 
         public Stats ActiveStats { get; private set; }
 
