@@ -15,7 +15,7 @@ namespace Core.Entities.Movement
         [SerializeField] private float _powerDash = 1f;
         [SerializeField] private float _timeDash = 0.3f;
 
-        private float _horizontalDirection;
+        [SerializeField] private float _horizontalDirection;
         private bool _isJump = false;
         private bool _isDash = false;
         private Coroutine _dashTimer;
@@ -30,6 +30,7 @@ namespace Core.Entities.Movement
         public override void Move(Vector2 direction)
         {
             _horizontalDirection = direction.x;
+            //print(direction);
             UpdateMovement();
         }
         public override void Press(KeyWorldInteraction key)
