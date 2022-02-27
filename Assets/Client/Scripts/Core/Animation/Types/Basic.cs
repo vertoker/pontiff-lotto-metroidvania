@@ -12,7 +12,8 @@ namespace Core.Animation
         public override Sprite Get(double time)// Проверить работоспособность
         {
             long frame = (long)(time * FPS);
-            return _sprites[frame % FPS];
+            //Debug.Log(string.Join(" ", frame, _sprites.Length));
+            return _sprites[frame % _sprites.Length];
         }
     }
 }

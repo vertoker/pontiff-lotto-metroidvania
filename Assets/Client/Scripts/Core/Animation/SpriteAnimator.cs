@@ -6,22 +6,23 @@ namespace Core.Animation
     public class SpriteAnimator : MonoBehaviour
     {
         [SerializeField] private List<Animation> _animations = new List<Animation>();
+        [SerializeField] private Animation _current;
         [SerializeField] private SpriteRenderer _renderer;
 
         private double startTime, currentTime;
-        private Animation _current;
 
         private void OnEnable()
         {
-            AnimationExecutor.UpdateTimer += Update;
+            AnimationExecutor.UpdateTimer += UpdateSprite;
         }
         private void OnDisable()
         {
-            AnimationExecutor.UpdateTimer -= Update;
+            AnimationExecutor.UpdateTimer -= UpdateSprite;
         }
 
         public void Switch(string name)
         {
+            //Debug.Log(string.Format("Object {0} switch animation to {1}", gameObject.name, name));
             Animation anim = _animations.Find((Animation anim) => anim.Name == name);
 
             if (anim == null)
@@ -29,10 +30,10 @@ namespace Core.Animation
 
             _current = anim;
             startTime = currentTime;
-            Update(currentTime);
+            UpdateSprite(currentTime);
         }
 
-        private void Update(double time)
+        private void UpdateSprite(double time)
         {
             currentTime = time;
             _renderer.sprite = _current.Get(currentTime - startTime);
