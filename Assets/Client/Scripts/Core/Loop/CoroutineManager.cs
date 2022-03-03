@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Loop
 {
-    class CoroutineManager//Pfrjyxbnm
+    public class CoroutineManager : MonoBehaviour
     {
+        private Dictionary<string, Coroutine> _coroutines;
 
+        public static void Add(string name)
+        {
+
+        }
     }
 }

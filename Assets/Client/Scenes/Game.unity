@@ -324,6 +324,7 @@ MonoBehaviour:
   target: {fileID: 1897952738}
   _data:
   - {fileID: 11400000, guid: 43337c160c56eee40b1f9ac986f2beac, type: 2}
+  - {fileID: 11400000, guid: cf1686e6da2f91b40a877cd1cd37d201, type: 2}
   _activeSceneNames: []
 --- !u!1 &1317242557
 GameObject:
