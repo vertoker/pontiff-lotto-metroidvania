@@ -16,7 +16,7 @@ namespace Core.World
         [SerializeField] private float _loadDistance = 10;
 
 #if UNITY_EDITOR
-        [Header("Header")]
+        [Header("Debug")]
         [SerializeField] private Vector2 _center;
         [SerializeField] private Vector2 _size;
         [SerializeField] private SceneAsset _scene;

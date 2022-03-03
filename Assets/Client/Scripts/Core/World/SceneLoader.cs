@@ -4,6 +4,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Core.World
 {
     public class SceneLoader : MonoBehaviour
@@ -19,6 +23,10 @@ namespace Core.World
         private void OnDisable()
         {
             TimerLoop.UpdateTimer -= ComputeLevelsLoad;
+        }
+        private void Awake()
+        {
+            _activeSceneNames = new List<string>();
         }
 
         private void ComputeLevelsLoad(double time)//Требует оптимизации
@@ -50,13 +58,63 @@ namespace Core.World
             if (_activeSceneNames.Remove(name))
                 SceneManager.UnloadSceneAsync(name);
         }
+
+#if UNITY_EDITOR
         public void LoadAll()
         {
-
+            int counter = 0;
+            foreach (var scene in _data)
+            {
+                try
+                {
+                    LoadSubScene(scene.Name);
+                    counter++;
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+            Debug.Log(string.Format("Load {0} from {1} scenes", counter, _data.Length));
         }
         public void UnloadAll()
         {
+            int counter = 0, length = _activeSceneNames.Count;
+            foreach (var scene in _data)
+            {
+                try
+                {
+                    UnloadSubScene(scene.Name); 
+                    counter++;
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+            }
+            Debug.Log(string.Format("Unload {0} scenes from {1} active scenes", counter, length));
+        }
+#endif
+    }
 
+#if UNITY_EDITOR
+    [CustomEditor(typeof(SceneLoader))]
+    class DebugLoader : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            SceneLoader data = (SceneLoader)target;
+
+            if (GUILayout.Button("Load All"))
+            {
+                data.LoadAll();
+            }
+            if (GUILayout.Button("Unload All"))
+            {
+                data.UnloadAll();
+            }
         }
     }
+#endif
 }
