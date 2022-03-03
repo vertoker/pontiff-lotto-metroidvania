@@ -65,6 +65,13 @@ namespace Core.Entities.Movement
                 _animator.JumpEnd();
             }
         }
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (!_isJump)
+            {
+                _isJump = true;
+            }
+        }
 
         private void Dash()
         {
