@@ -29,7 +29,7 @@ namespace Core.World
             _activeSceneNames = new List<string>();
         }
 
-        private void ComputeLevelsLoad(double time)//Требует оптимизации
+        private void ComputeLevelsLoad(double time)// Optimize
         {
             Vector2 targetPosition = target.position;
             foreach (var level in _data)
@@ -67,6 +67,7 @@ namespace Core.World
             {
                 try
                 {
+                    //EditorSceneManager.OpenScene();
                     LoadSubScene(scene.Name);
                     counter++;
                 }
